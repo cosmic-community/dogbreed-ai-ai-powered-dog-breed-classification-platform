@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ShoppingCart as ShoppingCartIcon, X, Plus, Minus, Trash2 } from 'lucide-react'
+import { ShoppingCart as ShoppingCartIcon, X, Plus, Minus, Trash2, CheckCircle } from 'lucide-react'
 import { CartItem } from '@/types'
 
 export default function ShoppingCart() {
   const [isOpen, setIsOpen] = useState(false)
   const [cart, setCart] = useState<CartItem[]>([])
+  const [showSuccess, setShowSuccess] = useState(false)
   
   useEffect(() => {
     // Load cart from localStorage
@@ -38,17 +39,32 @@ export default function ShoppingCart() {
     
     setCart(updatedCart)
     localStorage.setItem('cart', JSON.stringify(updatedCart))
+    window.dispatchEvent(new Event('cartUpdated'))
   }
   
   const removeItem = (id: string) => {
     const updatedCart = cart.filter(item => item.id !== id)
     setCart(updatedCart)
     localStorage.setItem('cart', JSON.stringify(updatedCart))
+    window.dispatchEvent(new Event('cartUpdated'))
   }
   
   const clearCart = () => {
     setCart([])
     localStorage.removeItem('cart')
+    window.dispatchEvent(new Event('cartUpdated'))
+  }
+  
+  const handleCheckout = () => {
+    // Show success message
+    setShowSuccess(true)
+    
+    // Clear cart after 2 seconds
+    setTimeout(() => {
+      clearCart()
+      setShowSuccess(false)
+      setIsOpen(false)
+    }, 2000)
   }
   
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
@@ -89,6 +105,17 @@ export default function ShoppingCart() {
               <X className="w-6 h-6" />
             </button>
           </div>
+          
+          {/* Success Message */}
+          {showSuccess && (
+            <div className="absolute inset-0 bg-white z-10 flex items-center justify-center">
+              <div className="text-center p-8">
+                <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">Order Successful!</h3>
+                <p className="text-gray-600">Thank you for your purchase</p>
+              </div>
+            </div>
+          )}
           
           {/* Cart Items */}
           <div className="flex-1 overflow-y-auto p-4">
@@ -146,7 +173,10 @@ export default function ShoppingCart() {
                 <span>Total:</span>
                 <span className="text-blue-600">${total.toFixed(2)}</span>
               </div>
-              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+              <button 
+                onClick={handleCheckout}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
                 Proceed to Checkout
               </button>
               <button 
