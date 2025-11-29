@@ -181,3 +181,13 @@ export interface CosmicResponse<T> {
   objects: T[]
   total: number
 }
+
+// Cart Item type
+export interface CartItem {
+  id: string
+  name: string
+  price: number
+  quantity: number
+  image?: string
+  type: 'marketplace' | 'food'
+}
