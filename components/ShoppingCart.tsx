@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ShoppingCart, X, Plus, Minus, Trash2 } from 'lucide-react'
+import { ShoppingCart as ShoppingCartIcon, X, Plus, Minus, Trash2 } from 'lucide-react'
 import { CartItem } from '@/types'
 
 export default function ShoppingCart() {
@@ -61,7 +61,7 @@ export default function ShoppingCart() {
         onClick={() => setIsOpen(true)}
         className="fixed top-4 right-4 z-40 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
       >
-        <ShoppingCart size={24} />
+        <ShoppingCartIcon className="w-6 h-6" />
         {itemCount > 0 && (
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
             {itemCount}
@@ -86,7 +86,7 @@ export default function ShoppingCart() {
               onClick={() => setIsOpen(false)}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <X size={24} />
+              <X className="w-6 h-6" />
             </button>
           </div>
           
@@ -94,7 +94,7 @@ export default function ShoppingCart() {
           <div className="flex-1 overflow-y-auto p-4">
             {cart.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
-                <ShoppingCart size={48} className="mx-auto mb-4 opacity-50" />
+                <ShoppingCartIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <p>Your cart is empty</p>
               </div>
             ) : (
@@ -116,20 +116,20 @@ export default function ShoppingCart() {
                           onClick={() => updateQuantity(item.id, -1)}
                           className="p-1 bg-white border rounded hover:bg-gray-100"
                         >
-                          <Minus size={14} />
+                          <Minus className="w-3.5 h-3.5" />
                         </button>
                         <span className="px-3 py-1 bg-white border rounded">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.id, 1)}
                           className="p-1 bg-white border rounded hover:bg-gray-100"
                         >
-                          <Plus size={14} />
+                          <Plus className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => removeItem(item.id)}
                           className="ml-auto p-1 text-red-600 hover:bg-red-50 rounded"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>

@@ -51,6 +51,12 @@ export async function POST(request: NextRequest) {
     // Demo mode: Return a random breed from the database
     if (breeds.length > 0) {
       const randomBreed = breeds[Math.floor(Math.random() * breeds.length)]
+      
+      // Add undefined check for randomBreed
+      if (!randomBreed) {
+        throw new Error('Failed to select a random breed')
+      }
+      
       const confidence = Math.floor(Math.random() * 15) + 85 // 85-100% confidence
 
       return NextResponse.json({
@@ -75,6 +81,12 @@ export async function POST(request: NextRequest) {
     ]
 
     const randomFallback = fallbackBreeds[Math.floor(Math.random() * fallbackBreeds.length)]
+    
+    // Add undefined check for randomFallback
+    if (!randomFallback) {
+      throw new Error('Failed to select a fallback breed')
+    }
+    
     const confidence = Math.floor(Math.random() * 15) + 85
 
     return NextResponse.json({
